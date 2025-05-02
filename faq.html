@@ -96,9 +96,6 @@
                     <ul>
                         <li><a href="aboutus.html">About Us</a></li>
                         <li><a href="#">Delivery Information</a></li>
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms & Conditions</a></li>
-                        <li><a href="#">Return Policy</a></li>
                     </ul>
                 </div>
                 <div class="footer-col">
@@ -174,28 +171,13 @@
             document.getElementById('mainMenu').classList.toggle('show');
         });
 
-        // Account button functionality
-        const accountBtn = document.getElementById('accountBtn');
-        const accountModal = document.getElementById('accountModal');
-        const modalClose = document.getElementById('modalClose');
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-
-        accountBtn.addEventListener('click', () => {
-            if (Auth.isLoggedIn()) {
-                window.location.href = 'profile.html';
-            } else {
-                accountModal.classList.add('show');
-            }
-        });
-
-        modalClose.addEventListener('click', () => {
-            accountModal.classList.remove('show');
-        });
-
-        window.addEventListener('click', (e) => {
-            if (e.target === accountModal) {
-                accountModal.classList.remove('show');
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                updateAccountButton();
+                Auth.updateCartCount();
+            } catch (error) {
+                console.error('Error during initial load:', error);
             }
         });
 
