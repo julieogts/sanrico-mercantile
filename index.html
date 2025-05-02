@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sanrico Mercantile Inc. | Hardware Store</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
     <!-- Header -->
@@ -21,17 +22,17 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="shop.html">Shop</a></li>
                         <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="aboutus.html">About Us</a></li>
                     </ul>
                 </nav>
-                <button class="account-btn" id="accountBtn">
+                <button class="account-btn" id="loginBtn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    Account
+                    Log In
                 </button>
-                <a href="cart.html" class="cart-btn hidden" id="cartBtn">
+                <a href="cart.html" class="cart-btn" id="cartBtn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="9" cy="21" r="1"></circle>
                         <circle cx="20" cy="21" r="1"></circle>
@@ -101,7 +102,7 @@
                     <div class="product-content">
                         <h3 class="product-title">18V Cordless Drill Kit</h3>
                         <p class="price">₱129.99</p>
-                        <button class="add-to-cart" data-product='{"id":1,"name":"18V Cordless Drill Kit","price":129.99,"image":"Cordless Drill"}'>Add to Cart</button>
+                        <button class="add-to-cart" data-product='{"id":1,"name":"18V Cordless Drill Kit","price":129.99,"category":"power-tools","image":"Cordless Drill"}'>Add to Cart</button>
                     </div>
                 </div>
                 <div class="product-card">
@@ -109,7 +110,7 @@
                     <div class="product-content">
                         <h3 class="product-title">7¼" Circular Saw</h3>
                         <p class="price">₱89.99</p>
-                        <button class="add-to-cart" data-product='{"id":2,"name":"7¼\" Circular Saw","price":89.99,"image":"Circular Saw"}'>Add to Cart</button>
+                        <button class="add-to-cart" data-product='{"id":2,"name":"7¼\" Circular Saw","price":89.99,"category":"power-tools","image":"Circular Saw"}'>Add to Cart</button>
                     </div>
                 </div>
                 <div class="product-card">
@@ -117,7 +118,7 @@
                     <div class="product-content">
                         <h3 class="product-title">108pc Mechanic's Tool Set</h3>
                         <p class="price">₱149.99</p>
-                        <button class="add-to-cart" data-product='{"id":3,"name":"108pc Mechanic\'s Tool Set","price":149.99,"image":"Tool Set"}'>Add to Cart</button>
+                        <button class="add-to-cart" data-product='{"id":3,"name":"108pc Mechanic Tool Set","price":149.99,"category":"hand-tools","image":"Tool Set"}'>Add to Cart</button>
                     </div>
                 </div>
                 <div class="product-card">
@@ -125,47 +126,50 @@
                     <div class="product-content">
                         <h3 class="product-title">22" Heavy-Duty Tool Box</h3>
                         <p class="price">₱34.99</p>
-                        <button class="add-to-cart" data-product='{"id":4,"name":"22\" Heavy-Duty Tool Box","price":34.99,"image":"Tool Box"}'>Add to Cart</button>
+                        <button class="add-to-cart" data-product='{"id":4,"name":"22\" Heavy-Duty Tool Box","price":34.99,"category":"hand-tools","image":"Tool Box"}'>Add to Cart</button>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Login/Signup Modal -->
-    <div class="modal" id="accountModal">
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
         <div class="modal-content">
             <button class="modal-close" id="modalClose">×</button>
-            <h2 class="modal-title">Account</h2>
+            <h2 class="modal-title">Log In</h2>
             <div class="tab-buttons">
-                <button class="tab-btn active" data-tab="login">Login</button>
-                <button class="tab-btn" data-tab="signup">Sign Up</button>
+                <button class="tab-btn active" data-tab="user-login">User Login</button>
+                <button class="tab-btn" data-tab="staff-login">Staff Login</button>
             </div>
-            <div class="tab-content active" id="login">
-                <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <input type="email" id="login-email" class="form-control" placeholder="Enter your email">
+            <div class="tab-content active" id="user-login">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div id="g_id_onload"
+                         data-client_id="856316440062-00drlhn0s99moqu4a0ktbvgrk0l4mda2.apps.googleusercontent.com"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin" 
+                         data-type="standard" 
+                         data-size="large" 
+                         data-theme="outline" 
+                         data-text="sign_in_with" 
+                         data-shape="rectangular" 
+                         data-logo_alignment="left">
+                    </div>
+                    <p style="margin-top: 10px;">Use Google to log in or register</p>
                 </div>
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" class="form-control" placeholder="Enter your password">
-                </div>
-                <button class="btn" id="loginBtn">Login</button>
             </div>
-            <div class="tab-content" id="signup">
+            <div class="tab-content" id="staff-login">
                 <div class="form-group">
-                    <label for="signup-name">Full Name</label>
-                    <input type="text" id="signup-name" class="form-control" placeholder="Enter your full name">
+                    <label for="staff-id">Staff ID</label>
+                    <input type="text" id="staff-id" class="form-control" placeholder="Enter your staff ID">
                 </div>
                 <div class="form-group">
-                    <label for="signup-email">Email</label>
-                    <input type="email" id="signup-email" class="form-control" placeholder="Enter your email">
+                    <label for="staff-password">Password</label>
+                    <input type="password" id="staff-password" class="form-control" placeholder="Enter your password">
                 </div>
-                <div class="form-group">
-                    <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" class="form-control" placeholder="Create a password">
-                </div>
-                <button class="btn" id="signupBtn">Sign Up</button>
+                <button class="btn" id="staffLoginSubmitBtn">Log In</button>
             </div>
         </div>
     </div>
@@ -187,7 +191,7 @@
                 <div class="footer-col">
                     <h4>Information</h4>
                     <ul>
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="aboutus.html">About Us</a></li>
                         <li><a href="#">Delivery Information</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms & Conditions</a></li>
@@ -197,7 +201,6 @@
                 <div class="footer-col">
                     <h4>Customer Service</h4>
                     <ul>
-                        <li><a href="#">Contact Us</a></li>
                         <li><a href="faq.html">FAQ</a></li>
                         <li><a href="#">Order Status</a></li>
                         <li><a href="#">Support</a></li>
@@ -209,7 +212,7 @@
                         <li>Regalado Avenue</li>
                         <li>Fairview, Quezon City</li>
                         <li>Phone: (555) 123-4567</li>
-                        <li>Email: <a href="mailto:support@sanricomercantile.com">support@sanricomercantile.com</a></li>
+                        <li>Email: <a href="mailto:support@sanricomercantile@gmail.com">support@sanricomercantile@gmail.com</a></li>
                     </ul>
                 </div>
             </div>
@@ -220,92 +223,52 @@
     </footer>
 
     <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
     <script>
         // Mobile menu toggle
         document.getElementById('menuToggle').addEventListener('click', function() {
             document.getElementById('mainMenu').classList.toggle('show');
         });
-    
-        // Account button functionality
-        const accountBtn = document.getElementById('accountBtn');
-        const accountModal = document.getElementById('accountModal');
-        const modalClose = document.getElementById('modalClose');
-        const tabButtons = document.querySelectorAll('.tab-btn');
-        const tabContents = document.querySelectorAll('.tab-content');
-    
-        accountBtn.addEventListener('click', () => {
-            if (Auth.isLoggedIn()) {
-                window.location.href = 'profile.html';
-            } else {
-                accountModal.classList.add('show');
-            }
-        });
-    
-        modalClose.addEventListener('click', () => {
-            accountModal.classList.remove('show');
-        });
-    
-        window.addEventListener('click', (e) => {
-            if (e.target === accountModal) {
-                accountModal.classList.remove('show');
-            }
-        });
-    
-        tabButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                tabButtons.forEach(btn => btn.classList.remove('active'));
-                tabContents.forEach(content => content.classList.remove('active'));
-    
-                button.classList.add('active');
-                document.getElementById(button.dataset.tab).classList.add('active');
-            });
-        });
-    
-        // Login functionality
-        document.getElementById('loginBtn').addEventListener('click', () => {
-            const email = document.getElementById('login-email').value;
-            const password = document.getElementById('login-password').value;
-            
-            const result = Auth.login(email, password);
-            alert(result.message);
-            
-            if (result.success) {
-                updateAccountButton();
-                accountModal.classList.remove('show');
-            }
-        });
-    
-        // Signup functionality
-        document.getElementById('signupBtn').addEventListener('click', () => {
-            const fullName = document.getElementById('signup-name').value;
-            const email = document.getElementById('signup-email').value;
-            const password = document.getElementById('signup-password').value;
-            
-            const result = Auth.register(fullName, email, password);
-            alert(result.message);
-            
-            if (result.success) {
-                updateAccountButton();
-                accountModal.classList.remove('show');
-            }
-        });
-    
+
         // Add to cart functionality
+        const myCart = new Cart();
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('add-to-cart')) {
+                if (!Auth.isLoggedIn()) {
+                    alert('Please log in to add items to the cart.');
+                    document.getElementById('loginModal').classList.add('show');
+                    return;
+                }
                 const product = JSON.parse(e.target.dataset.product);
+                console.log('Adding product to cart:', product);
                 const result = Auth.addToCart(product);
                 alert(result.message);
-                if (!result.success) {
-                    document.getElementById('accountModal').classList.add('show');
-                }
+                Auth.updateCartCount();
             }
         });
-    
+
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
-            updateAccountButton();
-            Auth.updateCartCount(); // Ensure cart count is initialized
+            try {
+                updateAccountButton();
+                Auth.updateCartCount();
+                if (window.location.hash === '#login') {
+                    document.getElementById('loginModal').classList.add('show');
+                }
+            } catch (error) {
+                console.error('Error during initial load:', error);
+            }
+        });
+        // Cart button redirect to login if not logged in
+        document.getElementById('cartBtn').addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link navigation
+            if (!Auth.isLoggedIn()) {
+                alert('Please log in to view your cart.');
+                document.getElementById('loginModal').classList.add('show');
+            } else {
+                // If logged in, navigate to cart page
+                window.location.href = 'cart.html';
+            }
         });
     </script>
 </body>

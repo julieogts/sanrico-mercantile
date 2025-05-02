@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile | Sanrico Mercantile Inc.</title>
     <link rel="stylesheet" href="css/styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
 </head>
 <body>
     <!-- Header -->
@@ -21,15 +23,15 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="shop.html">Shop</a></li>
                         <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="aboutus.html">About Us</a></li>
                     </ul>
                 </nav>
-                <button class="account-btn" id="accountBtn">
+                <button class="account-btn" id="loginBtn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                         <circle cx="12" cy="7" r="4"></circle>
                     </svg>
-                    Account
+                    Log In
                 </button>
                 <a href="cart.html" class="cart-btn hidden" id="cartBtn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -68,7 +70,6 @@
                     </div>
                     <div class="profile-buttons">
                         <button class="btn" id="saveProfileBtn">Save Profile</button>
-                        <button class="btn btn-secondary" id="changePasswordBtn">Change Password</button>
                         <button class="btn btn-secondary" id="logoutBtn">Logout</button>
                     </div>
                 </div>
@@ -81,27 +82,6 @@
             </div>
         </div>
     </section>
-
-    <!-- Change Password Modal -->
-    <div class="modal" id="changePasswordModal">
-        <div class="modal-content">
-            <button class="modal-close" id="closeChangePasswordModal">×</button>
-            <h3 class="modal-title">Change Password</h3>
-            <div class="form-group">
-                <label for="current-password">Current Password</label>
-                <input type="password" id="current-password" class="form-control" placeholder="Enter current password">
-            </div>
-            <div class="form-group">
-                <label for="new-password">New Password</label>
-                <input type="password" id="new-password" class="form-control" placeholder="Enter new password">
-            </div>
-            <div class="form-group">
-                <label for="confirm-password">Confirm New Password</label>
-                <input type="password" id="confirm-password" class="form-control" placeholder="Confirm new password">
-            </div>
-            <button class="btn" id="submitChangePassword">Change Password</button>
-        </div>
-    </div>
 
     <!-- Order Details Modal -->
     <div class="modal order-details-modal" id="orderDetailsModal">
@@ -130,7 +110,7 @@
                 <div class="footer-col">
                     <h4>Information</h4>
                     <ul>
-                        <li><a href="#">About Us</a></li>
+                        <li><a href="aboutus.html">About Us</a></li>
                         <li><a href="#">Delivery Information</a></li>
                         <li><a href="#">Privacy Policy</a></li>
                         <li><a href="#">Terms & Conditions</a></li>
@@ -140,7 +120,6 @@
                 <div class="footer-col">
                     <h4>Customer Service</h4>
                     <ul>
-                        <li><a href="#">Contact Us</a></li>
                         <li><a href="faq.html">FAQ</a></li>
                         <li><a href="#">Order Status</a></li>
                         <li><a href="#">Support</a></li>
@@ -152,7 +131,7 @@
                         <li>Regalado Avenue</li>
                         <li>Fairview, Quezon City</li>
                         <li>Phone: (555) 123-4567</li>
-                        <li>Email: <a href="mailto:support@sanrico.com">support@sanrico.com</a></li>
+                        <li>Email: <a href="mailto:support@sanricomercantile@gmail.com">support@sanricomercantile@gmail.com</a></li>
                     </ul>
                 </div>
             </div>
@@ -163,6 +142,7 @@
     </footer>
 
     <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
     <script>
         // Redirect to home if not logged in
         console.log('Profile page loaded, checking login status');
@@ -286,51 +266,6 @@
                 });
             } else {
                 console.warn('saveProfileBtn not found');
-            }
-
-            // Change password button
-            const changePasswordBtn = document.getElementById('changePasswordBtn');
-            const changePasswordModal = document.getElementById('changePasswordModal');
-            const closeChangePasswordModal = document.getElementById('closeChangePasswordModal');
-            const submitChangePassword = document.getElementById('submitChangePassword');
-
-            if (changePasswordBtn) {
-                changePasswordBtn.addEventListener('click', () => {
-                    console.log('Change password button clicked');
-                    changePasswordModal.classList.add('show');
-                });
-            } else {
-                console.warn('changePasswordBtn not found');
-            }
-
-            if (closeChangePasswordModal) {
-                closeChangePasswordModal.addEventListener('click', () => {
-                    console.log('Close change password modal clicked');
-                    changePasswordModal.classList.remove('show');
-                });
-            }
-
-            if (submitChangePassword) {
-                submitChangePassword.addEventListener('click', () => {
-                    console.log('Submit change password clicked');
-                    const currentPassword = document.getElementById('current-password').value.trim();
-                    const newPassword = document.getElementById('new-password').value.trim();
-                    const confirmPassword = document.getElementById('confirm-password').value.trim();
-
-                    if (!currentPassword || !newPassword || !confirmPassword) {
-                        alert('Please fill in all password fields.');
-                        return;
-                    }
-
-                    const result = Auth.changePassword(currentUser.id, currentPassword, newPassword, confirmPassword);
-                    alert(result.message);
-                    if (result.success) {
-                        changePasswordModal.classList.remove('show');
-                        document.getElementById('current-password').value = '';
-                        document.getElementById('new-password').value = '';
-                        document.getElementById('confirm-password').value = '';
-                    }
-                });
             }
 
             // Logout button

@@ -1,34 +1,72 @@
 class Auth {
-    static register(fullName, email, password) {
-        const users = this.getUsers();
-        if (users.find(user => user.email === email)) {
-            return { success: false, message: 'Email already exists' };
+    static googleRegister(idToken) {
+        const payload = this.decodeGoogleToken(idToken);
+        if (!payload.email) {
+            return { success: false, message: 'Invalid Google token' };
         }
-        
+
+        const users = this.getUsers();
+        if (users.find(user => user.email === payload.email)) {
+            return { success: false, message: 'Email already registered' };
+        }
+
+        const username = payload.email.split('@')[0];
         const user = {
             id: Date.now(),
-            fullName,
-            email,
-            password,
-            createdAt: new Date().toISOString()
+            fullName: payload.name || 'Google User',
+            email: payload.email,
+            username: username,
+            createdAt: new Date().toISOString(),
+            isGoogleAccount: true
         };
-        
+
         users.push(user);
         localStorage.setItem('users', JSON.stringify(users));
         this.setCurrentUser(user);
-        return { success: true, message: 'Registration successful' };
+        return { success: true, message: 'Google registration successful' };
     }
 
-    static login(email, password) {
+    static googleLogin(idToken) {
+        const payload = this.decodeGoogleToken(idToken);
+        if (!payload.email) {
+            return { success: false, message: 'Invalid Google token' };
+        }
+
         const users = this.getUsers();
-        const user = users.find(u => u.email === email && u.password === password);
+        const user = users.find(u => u.email === payload.email && u.isGoogleAccount);
         
         if (!user) {
-            return { success: false, message: 'Invalid email or password' };
+            return { success: false, message: 'User not registered with Google' };
         }
         
         this.setCurrentUser(user);
-        return { success: true, message: 'Login successful' };
+        return { success: true, message: 'Google login successful' };
+    }
+
+    static decodeGoogleToken(idToken) {
+        try {
+            const base64Url = idToken.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        } catch (e) {
+            console.error('Error decoding Google token:', e);
+            return {};
+        }
+    }
+
+    static staffLogin(staffId, password) {
+        const staff = JSON.parse(localStorage.getItem('staff') || '[]');
+        const validStaff = staff.find(s => s.staffId === staffId && s.password === password);
+        
+        if (!validStaff) {
+            return { success: false, message: 'Invalid staff ID or password' };
+        }
+        
+        this.setCurrentUser({ ...validStaff, isStaff: true });
+        return { success: true, message: 'Staff login successful' };
     }
 
     static logout() {
@@ -79,6 +117,7 @@ class Auth {
 
         users[userIndex].fullName = fullName;
         users[userIndex].email = email;
+        users[userIndex].username = email.split('@')[0];
         localStorage.setItem('users', JSON.stringify(users));
 
         const currentUser = this.getCurrentUser();
@@ -87,28 +126,6 @@ class Auth {
         }
 
         return { success: true, message: 'Details updated successfully' };
-    }
-
-    static changePassword(userId, currentPassword, newPassword, confirmPassword) {
-        if (newPassword !== confirmPassword) {
-            return { success: false, message: 'New passwords do not match' };
-        }
-
-        const users = this.getUsers();
-        const userIndex = users.findIndex(u => u.id === userId && u.password === currentPassword);
-        if (userIndex === -1) {
-            return { success: false, message: 'Current password is incorrect' };
-        }
-
-        users[userIndex].password = newPassword;
-        localStorage.setItem('users', JSON.stringify(users));
-
-        const currentUser = this.getCurrentUser();
-        if (currentUser && currentUser.id === userId) {
-            this.setCurrentUser(users[userIndex]);
-        }
-
-        return { success: true, message: 'Password changed successfully' };
     }
 
     static getUserAddress(userId) {
@@ -128,6 +145,9 @@ class Auth {
         const userIndex = users.findIndex(u => u.id === userId);
         if (userIndex !== -1) {
             users[userIndex] = { ...users[userIndex], ...updates };
+            if (updates.email) {
+                users[userIndex].username = updates.email.split('@')[0];
+            }
             localStorage.setItem('users', JSON.stringify(users));
             const currentUser = this.getCurrentUser();
             if (currentUser && currentUser.id === userId) {
@@ -138,14 +158,12 @@ class Auth {
 
     static addToCart(product) {
         if (!this.isLoggedIn()) {
-            return { success: false, message: 'Please log in to add items to cart' };
+            return { success: false, message: 'Please log in to add items to the cart.' };
         }
-
         const productWithCategory = {
             ...product,
             category: product.category || 'unknown'
         };
-
         const cart = new Cart();
         const result = cart.addItem(productWithCategory);
         this.updateCartCount();
@@ -209,7 +227,7 @@ class Auth {
             date: new Date().toISOString(),
             payment: paymentDetails,
             shipping: shippingDetails,
-            status: 'Pending' // Add status
+            status: 'Pending'
         };
     
         try {
@@ -256,10 +274,11 @@ class Cart {
             notes: this.notes
         };
         localStorage.setItem('cart', JSON.stringify(cartData));
-        this.updateCartCount();
+        Auth.updateCartCount();
     }
     
     addItem(product, quantity = 1) {
+        console.log('Adding item to cart:', product, 'Quantity:', quantity);
         const existingItem = this.items.find(item => item.id === product.id);
         
         if (existingItem) {
@@ -272,6 +291,7 @@ class Cart {
         }
         
         this.saveCart();
+        console.log('Cart after adding item:', this.items);
         return { success: true, message: 'Product added to cart!' };
     }
     
@@ -313,48 +333,44 @@ class Cart {
         return subtotal + this.shipping;
     }
     
-    updateCartCount() {
-        const cartCount = document.getElementById('cartCount');
-        if (cartCount) {
-            const totalItems = this.items.reduce((total, item) => total + item.quantity, 0);
-            cartCount.textContent = totalItems;
-        }
+    getCartCount() {
+        return this.items.reduce((total, item) => total + item.quantity, 0);
     }
 }
 
 function updateAccountButton() {
     console.log('updateAccountButton called');
-    const accountBtn = document.getElementById('accountBtn');
+    const loginBtn = document.getElementById('loginBtn');
     const cartBtn = document.getElementById('cartBtn');
     const currentUser = Auth.getCurrentUser();
     
-    if (!accountBtn) {
-        console.warn('Account button not found');
+    if (!loginBtn) {
+        console.warn('Login button not found');
         return;
     }
 
     if (currentUser) {
-        accountBtn.innerHTML = `
+        loginBtn.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
             </svg>
             ${currentUser.fullName}
         `;
-        if (cartBtn) {
+        if (cartBtn && !currentUser.isStaff) {
             cartBtn.classList.remove('hidden');
             Auth.updateCartCount();
         }
     } else {
-        accountBtn.innerHTML = `
+        loginBtn.innerHTML = `
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                 <circle cx="12" cy="7" r="4"></circle>
             </svg>
-            Account
+            Log In
         `;
         if (cartBtn) {
-            cartBtn.classList.add('hidden');
+            cartBtn.classList.remove('hidden'); // Show cart for guest users
         }
     }
 }
