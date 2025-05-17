@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanrico Mercantile Inc. | Hardware Store</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="images/sanrico_logo_1.png" alt="Sanrico Mercantile Logo" class="logo-img">
+                Sanrico <span>Mercantile</span>
+            </a>
+            <div style="display: flex; align-items: center;">
+                <button class="mobile-toggle" id="menuToggle">☰</button>
+                <nav>
+                    <ul id="mainMenu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="aboutus.html">About Us</a></li>
+                    </ul>
+                </nav>
+                <button class="account-btn" id="loginBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    Log In
+                </button>
+                <a href="cart.html" class="cart-btn" id="cartBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Quality Hardware for Every Project</h1>
+                <p>Find the perfect tools and materials for your next home improvement, construction, or DIY project.</p>
+                <a href="shop.html" class="btn">Shop Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Popular Categories</h2>
+            <div class="category-grid">
+                <a href="shop.html?category=power-tools" class="category-card">
+                    <div class="category-img">Power Tools</div>
+                    <div class="category-content">
+                        <h3>Power Tools</h3>
+                        <p>High-performance drills, saws, and more</p>
+                    </div>
+                </a>
+                <a href="shop.html?category=hand-tools" class="category-card">
+                    <div class="category-img">Hand Tools</div>
+                    <div class="category-content">
+                        <h3>Hand Tools</h3>
+                        <p>Wrenches, hammers, and essential hand tools</p>
+                    </div>
+                </a>
+                <a href="shop.html?category=plumbing" class="category-card">
+                    <div class="category-img">Plumbing</div>
+                    <div class="category-content">
+                        <h3>Plumbing</h3>
+                        <p>Pipes, fittings, and fixtures</p>
+                    </div>
+                </a>
+                <a href="shop.html?category=electrical" class="category-card">
+                    <div class="category-img">Electrical</div>
+                    <div class="category-content">
+                        <h3>Electrical</h3>
+                        <p>Wiring, outlets, and electrical components</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <div class="product-img">Cordless Drill</div>
+                    <div class="product-content">
+                        <h3 class="product-title">18V Cordless Drill Kit</h3>
+                        <p class="price">₱129.99</p>
+                        <button class="add-to-cart" data-product='{"id":1,"name":"18V Cordless Drill Kit","price":129.99,"category":"power-tools","image":"Cordless Drill"}'>Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">Circular Saw</div>
+                    <div class="product-content">
+                        <h3 class="product-title">7¼" Circular Saw</h3>
+                        <p class="price">₱89.99</p>
+                        <button class="add-to-cart" data-product='{"id":2,"name":"7¼\" Circular Saw","price":89.99,"category":"power-tools","image":"Circular Saw"}'>Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">Tool Set</div>
+                    <div class="product-content">
+                        <h3 class="product-title">108pc Mechanic's Tool Set</h3>
+                        <p class="price">₱149.99</p>
+                        <button class="add-to-cart" data-product='{"id":3,"name":"108pc Mechanic Tool Set","price":149.99,"category":"hand-tools","image":"Tool Set"}'>Add to Cart</button>
+                    </div>
+                </div>
+                <div class="product-card">
+                    <div class="product-img">Tool Box</div>
+                    <div class="product-content">
+                        <h3 class="product-title">22" Heavy-Duty Tool Box</h3>
+                        <p class="price">₱34.99</p>
+                        <button class="add-to-cart" data-product='{"id":4,"name":"22\" Heavy-Duty Tool Box","price":34.99,"category":"hand-tools","image":"Tool Box"}'>Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            <h2 class="modal-title">Log In</h2>
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="user-login">User Login</button>
+                <button class="tab-btn" data-tab="staff-login">Staff Login</button>
+            </div>
+            <div class="tab-content active" id="user-login">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div id="g_id_onload"
+                         data-client_id="856316440062-00drlhn0s99moqu4a0ktbvgrk0l4mda2.apps.googleusercontent.com"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin" 
+                         data-type="standard" 
+                         data-size="large" 
+                         data-theme="outline" 
+                         data-text="sign_in_with" 
+                         data-shape="rectangular" 
+                         data-logo_alignment="left">
+                    </div>
+                    <p style="margin-top: 10px;">Use Google to log in or register</p>
+                </div>
+            </div>
+            <div class="tab-content" id="staff-login">
+                <div class="form-group">
+                    <label for="staff-id">Staff ID</label>
+                    <input type="text" id="staff-id" class="form-control" placeholder="Enter your staff ID">
+                </div>
+                <div class="form-group">
+                    <label for="staff-password">Password</label>
+                    <input type="password" id="staff-password" class="form-control" placeholder="Enter your password">
+                </div>
+                <button class="btn" id="staffLoginSubmitBtn">Log In</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="shop.html?category=power-tools">Power Tools</a></li>
+                        <li><a href="shop.html?category=hand-tools">Hand Tools</a></li>
+                        <li><a href="shop.html?category=plumbing">Plumbing</a></li>
+                        <li><a href="shop.html?category=electrical">Electrical</a></li>
+                        <li><a href="shop.html?category=building-materials">Building Materials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Information</h4>
+                    <ul>
+                        <li><a href="aboutus.html">About Us</a></li>
+                        <li><a href="#">Delivery Information</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="#">Order Status</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li>Regalado Avenue</li>
+                        <li>Fairview, Quezon City</li>
+                        <li>Phone: (555) 123-4567</li>
+                        <li>Email: <a href="mailto:support@sanricomercantile@gmail.com">support@sanricomercantile@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Sanrico Mercantile Inc. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('mainMenu').classList.toggle('show');
+        });
+
+        // Add to cart functionality
+        const myCart = new Cart();
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('add-to-cart')) {
+                if (!Auth.isLoggedIn()) {
+                    alert('Please log in to add items to the cart.');
+                    document.getElementById('loginModal').classList.add('show');
+                    return;
+                }
+                const product = JSON.parse(e.target.dataset.product);
+                console.log('Adding product to cart:', product);
+                const result = Auth.addToCart(product);
+                alert(result.message);
+                Auth.updateCartCount();
+            }
+        });
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                updateAccountButton();
+                Auth.updateCartCount();
+                if (window.location.hash === '#login') {
+                    document.getElementById('loginModal').classList.add('show');
+                }
+            } catch (error) {
+                console.error('Error during initial load:', error);
+            }
+        });
+        // Cart button redirect to login if not logged in
+        document.getElementById('cartBtn').addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link navigation
+            if (!Auth.isLoggedIn()) {
+                alert('Please log in to view your cart.');
+                document.getElementById('loginModal').classList.add('show');
+            } else {
+                // If logged in, navigate to cart page
+                window.location.href = 'cart.html';
+            }
+        });
+    </script>
+</body>
+</html>

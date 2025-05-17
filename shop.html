@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop | Sanrico Mercantile Inc.</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="images/sanrico_logo_1.png" alt="Sanrico Mercantile Logo" class="logo-img">
+                Sanrico <span>Mercantile</span>
+            </a>
+            <div style="display: flex; align-items: center;">
+                <button class="mobile-toggle" id="menuToggle">☰</button>
+                <nav>
+                    <ul id="mainMenu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="aboutus.html">About Us</a></li>
+                    </ul>
+                </nav>
+                <button class="account-btn" id="loginBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    Log In
+                </button>
+                <a href="cart.html" class="cart-btn" id="cartBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Shop Section -->
+    <section class="shop-section">
+        <div class="container">
+            <h2 class="section-title">Shop All Products</h2>
+            <div class="shop-controls">
+                <div class="search-group">
+                    <label for="search-input">Search:</label>
+                    <input type="text" id="search-input" placeholder="Search products...">
+                </div>
+                <div class="filter-group">
+                    <label for="category-filter">Category:</label>
+                    <select id="category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="power-tools">Power Tools</option>
+                        <option value="hand-tools">Hand Tools</option>
+                        <option value="plumbing">Plumbing</option>
+                        <option value="electrical">Electrical</option>
+                        <option value="building-materials">Building Materials</option>
+                    </select>
+                </div>
+                <div class="sort-group">
+                    <label for="sort-by">Sort by:</label>
+                    <select id="sort-by">
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name">Name: A-Z</option>
+                    </select>
+                </div>
+            </div>
+            <div class="product-grid" id="product-grid">
+                <!-- Products will be populated by JavaScript -->
+            </div>
+            <div class="pagination" id="pagination">
+                <!-- Pagination controls will be populated by JavaScript -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            <h2 class="modal-title">Log In</h2>
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="user-login">User Login</button>
+                <button class="tab-btn" data-tab="staff-login">Staff Login</button>
+            </div>
+            <div class="tab-content active" id="user-login">
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <div id="g_id_onload"
+                         data-client_id="856316440062-00drlhn0s99moqu4a0ktbvgrk0l4mda2.apps.googleusercontent.com"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin" 
+                         data-type="standard" 
+                         data-size="large" 
+                         data-theme="outline" 
+                         data-text="sign_in_with" 
+                         data-shape="rectangular" 
+                         data-logo_alignment="left">
+                    </div>
+                    <p style="margin-top: 10px;">Use Google to log in or register</p>
+                </div>
+            </div>
+            <div class="tab-content" id="staff-login">
+                <div class="form-group">
+                    <label for="staff-id">Staff ID</label>
+                    <input type="text" id="staff-id" class="form-control" placeholder="Enter your staff ID">
+                </div>
+                <div class="form-group">
+                    <label for="staff-password">Password</label>
+                    <input type="password" id="staff-password" class="form-control" placeholder="Enter your password">
+                </div>
+                <button class="btn" id="staffLoginSubmitBtn">Log In</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="shop.html?category=power-tools">Power Tools</a></li>
+                        <li><a href="shop.html?category=hand-tools">Hand Tools</a></li>
+                        <li><a href="shop.html?category=plumbing">Plumbing</a></li>
+                        <li><a href="shop.html?category=electrical">Electrical</a></li>
+                        <li><a href="shop.html?category=building-materials">Building Materials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Information</h4>
+                    <ul>
+                        <li><a href="aboutus.html">About Us</a></li>
+                        <li><a href="#">Delivery Information</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="#">Order Status</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li>Regalado Avenue</li>
+                        <li>Fairview, Quezon City</li>
+                        <li>Phone: (555) 123-4567</li>
+                        <li>Email: <a href="mailto:support@sanricomercantile@gmail.com">support@sanricomercantile@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Sanrico Mercantile Inc. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
+    <script>
+        // Load products from localStorage to stay in sync with staff dashboard
+        let products = [];
+        const savedProducts = localStorage.getItem('products');
+        if (savedProducts) {
+            products = JSON.parse(savedProducts);
+        }
+
+        const itemsPerPage = 10;
+        let currentPage = 1;
+        let filteredProducts = [...products];
+
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('mainMenu').classList.toggle('show');
+        });
+
+        // Add to cart functionality
+        const myCart = new Cart();
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('add-to-cart')) {
+                e.preventDefault(); // Prevent link navigation
+                if (!Auth.isLoggedIn()) {
+                    alert('Please log in to add items to the cart.');
+                    document.getElementById('loginModal').classList.add('show');
+                    return;
+                }
+                const product = JSON.parse(e.target.dataset.product);
+                console.log('Adding product to cart:', product);
+                const result = Auth.addToCart(product);
+                alert(result.message);
+                Auth.updateCartCount();
+            }
+        });
+
+        // Filter, sort, and search functionality
+        function filterAndSortProducts() {
+            const searchQuery = document.getElementById('search-input').value.toLowerCase();
+            const category = document.getElementById('category-filter').value;
+            const sortBy = document.getElementById('sort-by').value;
+
+            filteredProducts = products.filter(product => {
+                const matchesSearch = product.name.toLowerCase().includes(searchQuery);
+                const matchesCategory = category === 'all' || product.category === category;
+                return matchesSearch && matchesCategory;
+            });
+
+            switch (sortBy) {
+                case 'price-low':
+                    filteredProducts.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    filteredProducts.sort((a, b) => b.price - a.price);
+                    break;
+                case 'name':
+                    filteredProducts.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+            }
+
+            currentPage = 1;
+            displayProducts();
+        }
+
+        function displayProducts() {
+            const start = (currentPage - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const displayedProducts = filteredProducts.slice(start, end);
+
+            document.getElementById('product-grid').innerHTML = displayedProducts.map(product => `
+                <div class="product-card">
+                    <a href="product.html?id=${product.id}" class="product-link">
+                        <div class="product-img">
+                            <img src="${product.image.startsWith('data:image') ? product.image : 'images/' + product.image}" 
+                                 alt="${product.name}"
+                                 onerror="this.src='images/placeholder.jpg'"
+                                 style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-title">${product.name}</h3>
+                            <p class="price">₱${product.price.toFixed(2)}</p>
+                            <button class="add-to-cart" data-product='${JSON.stringify(product)}'>Add to Cart</button>
+                        </div>
+                    </a>
+                </div>
+            `).join('');
+
+            updatePagination();
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(filteredProducts.length / itemsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                button.className = i === currentPage ? 'active' : '';
+                button.onclick = () => {
+                    currentPage = i;
+                    displayProducts();
+                };
+                pagination.appendChild(button);
+            }
+        }
+
+        document.getElementById('category-filter').addEventListener('change', filterAndSortProducts);
+        document.getElementById('sort-by').addEventListener('change', filterAndSortProducts);
+        document.getElementById('search-input').addEventListener('input', filterAndSortProducts);
+
+        // Listen for changes in localStorage
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'products') {
+                products = JSON.parse(e.newValue || '[]');
+                filterAndSortProducts();
+            }
+        });
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const category = urlParams.get('category') || 'all';
+                document.getElementById('category-filter').value = category;
+                filterAndSortProducts();
+                Auth.updateCartCount();
+                updateAccountButton();
+            } catch (error) {
+                console.error('Error during initial load:', error);
+            }
+        });
+        // Cart button redirect to login if not logged in
+        document.getElementById('cartBtn').addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link navigation
+            if (!Auth.isLoggedIn()) {
+                alert('Please log in to view your cart.');
+                document.getElementById('loginModal').classList.add('show');
+            } else {
+                // If logged in, navigate to cart page
+                window.location.href = 'cart.html';
+            }
+        });
+        // Add Google Sign-In handler function
+        function handleGoogleSignIn(response) {
+            console.log('Google Sign-In Response:', response);
+            const idToken = response.credential;
+            if (!idToken) {
+                console.error('No idToken received');
+                alert('Google Sign-In failed: No token received');
+                return;
+            }
+            // Try login first
+            let result = Auth.googleLogin(idToken);
+            console.log('Login Result:', result);
+            if (!result.success && result.message.includes("not registered")) {
+                // If login fails due to user not existing, attempt registration
+                result = Auth.googleRegister(idToken);
+                console.log('Registration Result:', result);
+            }
+            alert(result.message);
+            if (result.success) {
+                updateAccountButton();
+                document.getElementById('loginModal').classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>

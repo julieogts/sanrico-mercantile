@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile | Sanrico Mercantile Inc.</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo">
+                <img src="images/sanrico_logo_1.png" alt="Sanrico Mercantile Logo" class="logo-img">
+                Sanrico <span>Mercantile</span>
+            </a>
+            <div style="display: flex; align-items: center;">
+                <button class="mobile-toggle" id="menuToggle">☰</button>
+                <nav>
+                    <ul id="mainMenu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="aboutus.html">About Us</a></li>
+                    </ul>
+                </nav>
+                <button class="account-btn" id="loginBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    Log In
+                </button>
+                <a href="cart.html" class="cart-btn hidden" id="cartBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Profile Section -->
+    <section class="profile-section">
+        <div class="container">
+            <h2 class="section-title">My Profile</h2>
+            <div class="profile-container">
+                <div class="profile-card">
+                    <h3>Personal Information</h3>
+                    <div class="form-group">
+                        <label for="profile-name">Full Name</label>
+                        <input type="text" id="profile-name" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-email">Email</label>
+                        <input type="email" id="profile-email" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-address">Shipping Address</label>
+                        <textarea id="profile-address" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-phone">Phone Number</label>
+                        <input type="tel" id="profile-phone" class="form-control" placeholder="e.g., 09123456789">
+                    </div>
+                    <div class="profile-buttons">
+                        <button class="btn" id="saveProfileBtn">Save Profile</button>
+                        <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+                    </div>
+                </div>
+                <div class="profile-card">
+                    <h3>Order History</h3>
+                    <div id="order-history">
+                        <!-- Order history will be populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Order Details Modal -->
+    <div class="modal order-details-modal" id="orderDetailsModal">
+        <div class="modal-content">
+            <button class="modal-close" id="closeOrderDetailsModal">×</button>
+            <div id="order-details-content">
+                <!-- Order details will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="shop.html?category=power-tools">Power Tools</a></li>
+                        <li><a href="shop.html?category=hand-tools">Hand Tools</a></li>
+                        <li><a href="shop.html?category=plumbing">Plumbing</a></li>
+                        <li><a href="shop.html?category=electrical">Electrical</a></li>
+                        <li><a href="shop.html?category=building-materials">Building Materials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Information</h4>
+                    <ul>
+                        <li><a href="aboutus.html">About Us</a></li>
+                        <li><a href="#">Delivery Information</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="#">Order Status</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li>Regalado Avenue</li>
+                        <li>Fairview, Quezon City</li>
+                        <li>Phone: (555) 123-4567</li>
+                        <li>Email: <a href="mailto:support@sanricomercantile@gmail.com">support@sanricomercantile@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Sanrico Mercantile Inc. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
+    <script>
+        // Redirect to home if not logged in or to staff dashboard if staff user
+        if (typeof Auth !== 'undefined') {
+            const currentUser = Auth.getCurrentUser();
+            if (!currentUser) {
+                window.location.href = 'index.html';
+            } else if (currentUser.isStaff) {
+                window.location.href = 'staff-dashboard.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM fully loaded for profile.html');
+            const currentUser = Auth.getCurrentUser();
+            if (!currentUser) {
+                console.error('No current user, redirecting to index.html');
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Mobile menu toggle
+            const menuToggle = document.getElementById('menuToggle');
+            if (menuToggle) {
+                menuToggle.addEventListener('click', () => {
+                    console.log('Mobile menu toggled');
+                    document.getElementById('mainMenu').classList.toggle('show');
+                });
+            } else {
+                console.warn('menuToggle not found');
+            }
+
+            // Account button functionality
+            const accountBtn = document.getElementById('accountBtn');
+            if (accountBtn) {
+                accountBtn.addEventListener('click', () => {
+                    console.log('Account button clicked');
+                    if (Auth.isLoggedIn()) {
+                        window.location.href = 'profile.html';
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+                });
+            } else {
+                console.warn('accountBtn not found');
+            }
+
+            // Display user info
+            const nameInput = document.getElementById('profile-name');
+            const emailInput = document.getElementById('profile-email');
+            const addressInput = document.getElementById('profile-address');
+            const phoneInput = document.getElementById('profile-phone');
+
+            if (nameInput && emailInput && addressInput && phoneInput) {
+                nameInput.value = currentUser.fullName || '';
+                emailInput.value = currentUser.email || '';
+                addressInput.value = Auth.getUserAddress(currentUser.id) || '';
+                phoneInput.value = Auth.getUserPhone(currentUser.id) || '';
+            } else {
+                console.error('Profile input fields missing');
+            }
+
+            // Display order history
+            const orders = Auth.getUserOrders(currentUser.id);
+            console.log('Orders retrieved:', orders);
+            const orderHistory = document.getElementById('order-history');
+            if (orderHistory) {
+                orderHistory.innerHTML = orders.length > 0 ? orders.map((order, index) => {
+                    const subtotal = order.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+                    const total = subtotal + 150;
+                    return `
+                        <div class="order-item">
+                            <h4>Order #${index + 1} - ${new Date(order.date).toLocaleDateString()}</h4>
+                            <span class="order-status ${order.status.toLowerCase()}">${order.status}</span>
+                            <p class="items"><strong>Items:</strong> ${order.items.map(item => `${item.name} (x${item.quantity})`).join(', ')}</p>
+                            ${order.notes ? `<p class="notes"><strong>Notes:</strong> <span class="notes-content">${order.notes}</span></p>` : ''}
+                            ${order.shipping ? `
+                                <p class="shipping-address"><strong>Shipping Address:</strong> ${order.shipping.address}</p>
+                                <p class="phone-number"><strong>Phone Number:</strong> ${order.shipping.phoneNumber}</p>
+                            ` : ''}
+                            ${order.payment ? `
+                                <p class="payment-method"><strong>Payment Method:</strong> ${
+                                    order.payment.method === 'bank' ? 'Bank Transfer' :
+                                    order.payment.method === 'gcash' ? 'GCash' :
+                                    order.payment.method === 'cheque' ? 'Cheque' : 'Unknown'
+                                }</p>
+                            ` : ''}
+                            <button class="btn btn-secondary" onclick="showOrderDetails(${index})">View Details</button>
+                        </div>
+                    `;
+                }).join('') : '<p>No orders yet.</p>';
+            } else {
+                console.error('order-history element not found');
+            }
+
+            // Save profile button
+            const saveProfileBtn = document.getElementById('saveProfileBtn');
+            if (saveProfileBtn) {
+                saveProfileBtn.addEventListener('click', () => {
+                    console.log('Save profile clicked');
+                    const address = addressInput.value.trim();
+                    const phoneNumber = phoneInput.value.trim();
+
+                    if (!address) {
+                        alert('Please provide a shipping address.');
+                        return;
+                    }
+                    if (!phoneNumber) {
+                        alert('Please provide a phone number.');
+                        return;
+                    }
+                    if (!/^\d{11}$/.test(phoneNumber)) {
+                        alert('Please enter a valid 11-digit phone number (e.g., 09123456789).');
+                        return;
+                    }
+
+                    Auth.updateUserProfile(currentUser.id, {
+                        address,
+                        phoneNumber
+                    });
+                    alert('Profile updated successfully.');
+                });
+            } else {
+                console.warn('saveProfileBtn not found');
+            }
+
+            // Logout button
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    console.log('Logout button clicked');
+                    const result = Auth.logout();
+                    console.log('Logout result:', result);
+                    alert(result.message);
+                    if (result.success) {
+                        console.log('Redirecting to index.html');
+                        window.location.href = 'index.html';
+                    } else {
+                        console.error('Logout failed:', result.message);
+                    }
+                });
+            } else {
+                console.error('logoutBtn not found');
+            }
+
+            // Order details modal
+            const orderDetailsModal = document.getElementById('orderDetailsModal');
+            const closeOrderDetailsModal = document.getElementById('closeOrderDetailsModal');
+            if (closeOrderDetailsModal) {
+                closeOrderDetailsModal.addEventListener('click', () => {
+                    console.log('Close order details modal clicked');
+                    orderDetailsModal.classList.remove('show');
+                });
+            }
+
+            // Initialize cart count
+            Auth.updateCartCount();
+        });
+
+        // Show order details in modal
+        function showOrderDetails(index) {
+            console.log(`Showing details for order ${index}`);
+            const currentUser = Auth.getCurrentUser();
+            const orders = Auth.getUserOrders(currentUser.id);
+            const order = orders[index];
+            if (!order) {
+                console.error(`Order at index ${index} not found`);
+                return;
+            }
+
+            const subtotal = order.items.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const total = subtotal + 150;
+
+            const orderDetailsContent = document.getElementById('order-details-content');
+            if (orderDetailsContent) {
+                orderDetailsContent.innerHTML = `
+                    <h5>Order Details</h5>
+                    <div class="order-items">
+                        ${order.items.map(item => `
+                            <div class="order-item-detail">
+                                <p><strong>Product:</strong> ${item.name}</p>
+                                <p><strong>Price:</strong> ₱${item.price.toFixed(2)}</p>
+                                <p><strong>Quantity:</strong> ${item.quantity}</p>
+                                <p><strong>Subtotal:</strong> ₱${(item.price * item.quantity).toFixed(2)}</p>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <p><strong>Subtotal:</strong> ₱${subtotal.toFixed(2)}</p>
+                    <p><strong>Shipping:</strong> ₱150.00</p>
+                    <p><strong>Total:</strong> ₱${total.toFixed(2)}</p>
+                    ${order.shipping ? `
+                        <p><strong>Shipping Address:</strong> ${order.shipping.address}</p>
+                        <p><strong>Phone Number:</strong> ${order.shipping.phoneNumber}</p>
+                    ` : ''}
+                    <div class="form-group">
+                        <label for="payment-reference-${index}">Payment Reference</label>
+                        <input type="text" id="payment-reference-${index}" class="form-control" value="${order.payment.reference || ''}" placeholder="e.g., GCash Ref #123456789">
+                    </div>
+                    ${order.payment.method === 'bank' ? `
+                        <div class="form-group">
+                            <label for="bank-name-${index}">Bank Name</label>
+                            <input type="text" id="bank-name-${index}" class="form-control" value="${order.payment.bankName || ''}" placeholder="e.g., BDO">
+                        </div>
+                        <div class="form-group">
+                            <label for="account-number-${index}">Account Number</label>
+                            <input type="text" id="account-number-${index}" class="form-control" value="${order.payment.accountNumber || ''}" placeholder="e.g., 1234567890">
+                        </div>
+                    ` : order.payment.method === 'cheque' ? `
+                        <div class="form-group">
+                            <label for="cheque-number-${index}">Cheque Number</label>
+                            <input type="text" id="cheque-number-${index}" class="form-control" value="${order.payment.chequeNumber || ''}" placeholder="e.g., CHK123456">
+                        </div>
+                    ` : ''}
+                    <button class="btn" onclick="savePaymentDetails(${index})">Save Payment Details</button>
+                `;
+                document.getElementById('orderDetailsModal').classList.add('show');
+            } else {
+                console.error('order-details-content not found');
+            }
+        }
+
+        // Save payment details
+        function savePaymentDetails(index) {
+            console.log(`Saving payment details for order ${index}`);
+            const referenceInput = document.getElementById(`payment-reference-${index}`);
+            const paymentUpdates = { reference: referenceInput ? referenceInput.value.trim() : '' };
+
+            const currentUser = Auth.getCurrentUser();
+            if (!currentUser) {
+                console.error('No current user, cannot save payment details');
+                alert('Please log in to save payment details.');
+                return;
+            }
+
+            const order = Auth.getUserOrders(currentUser.id)[index];
+            if (!order || !order.payment) {
+                console.error('Order or payment data not found');
+                alert('Invalid order data.');
+                return;
+            }
+
+            if (order.payment.method === 'bank') {
+                const bankNameInput = document.getElementById(`bank-name-${index}`);
+                const accountNumberInput = document.getElementById(`account-number-${index}`);
+                paymentUpdates.bankName = bankNameInput ? bankNameInput.value.trim() : '';
+                paymentUpdates.accountNumber = accountNumberInput ? accountNumberInput.value.trim() : '';
+            } else if (order.payment.method === 'cheque') {
+                const chequeNumberInput = document.getElementById(`cheque-number-${index}`);
+                paymentUpdates.chequeNumber = chequeNumberInput ? chequeNumberInput.value.trim() : '';
+            }
+
+            const result = Auth.updateOrderPaymentDetails(currentUser.id, index, paymentUpdates);
+            console.log('Save payment result:', result);
+            alert(result.message);
+            if (result.success) {
+                document.getElementById('orderDetailsModal').classList.remove('show');
+            }
+        }
+    </script>
+</body>
+</html>

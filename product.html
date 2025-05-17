@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details - Sanrico Mercantile</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .product-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 400px;
+            object-fit: contain;
+            border-radius: 8px;
+            background-color: #fff;
+            padding: 1rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 2rem;
+            color: #333;
+            margin: 0;
+        }
+
+        .product-category {
+            color: #666;
+            text-transform: capitalize;
+            font-size: 1.1rem;
+        }
+
+        .product-description {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        .product-highlights {
+            margin: 1rem 0;
+        }
+
+        .product-highlights ul {
+            list-style-type: disc;
+            padding-left: 1.5rem;
+            color: #444;
+        }
+
+        .product-price {
+            font-size: 1.8rem;
+            color: #333;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        .brand-select {
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            max-width: 300px;
+            margin: 1rem 0;
+        }
+
+        .add-to-cart {
+            background-color: #4F46E5;
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .add-to-cart:hover {
+            background-color: #4338CA;
+        }
+
+        .breadcrumb {
+            padding: 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .breadcrumb a {
+            color: #4F46E5;
+            text-decoration: none;
+        }
+
+        .breadcrumb span {
+            color: #666;
+            margin: 0 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="images/logo.png" alt="Sanrico Mercantile">
+            </a>
+            <div class="nav-links">
+                <a href="index.html">Home</a>
+                <a href="shop.html">Shop</a>
+                <a href="faq.html">FAQ</a>
+                <a href="about.html">About Us</a>
+                <a href="login.html" id="loginBtn">Rodian Ebias</a>
+                <a href="cart.html" class="cart-icon">🛒<span class="cart-count">0</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="breadcrumb">
+        <a href="index.html">Home</a>
+        <span>/</span>
+        <a href="shop.html">Shop</a>
+        <span>/</span>
+        <span id="productName">Product Name</span>
+    </div>
+
+    <div class="product-container">
+        <div class="image-section">
+            <img id="productImage" src="images/placeholder.jpg" alt="Product Image" class="product-image">
+        </div>
+        <div class="product-details">
+            <h1 id="productTitle" class="product-title">Product Name</h1>
+            <div id="productCategory" class="product-category">Category</div>
+            <div class="product-description">
+                <p id="productDescription">Comprehensive tool set for automotive and general mechanical tasks.</p>
+                <div class="product-highlights">
+                    <h3>Highlights:</h3>
+                    <ul id="productHighlights">
+                        <li>Durable and long-lasting construction</li>
+                        <li>Designed for professional use</li>
+                        <li>Ergonomic design for comfort</li>
+                        <li>Backed by manufacturer warranty</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="product-price">₱<span id="productPrice">0.00</span></div>
+            <select class="brand-select">
+                <option value="">Select a Brand</option>
+            </select>
+            <button class="add-to-cart">Add to Cart</button>
+        </div>
+    </div>
+
+    <script>
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Function to load product details
+        function loadProductDetails() {
+            const productId = getUrlParameter('id');
+            const products = JSON.parse(localStorage.getItem('products') || '[]');
+            const product = products.find(p => p.id === parseInt(productId));
+
+            if (product) {
+                document.getElementById('productTitle').textContent = product.name;
+                document.getElementById('productName').textContent = product.name;
+                document.getElementById('productCategory').textContent = product.category;
+                document.getElementById('productPrice').textContent = product.price.toFixed(2);
+                
+                // Set product image
+                const productImage = document.getElementById('productImage');
+                if (product.image) {
+                    productImage.src = product.image.startsWith('data:image') ? 
+                        product.image : 
+                        `images/${product.image}`;
+                    productImage.onerror = () => {
+                        productImage.src = 'images/placeholder.jpg';
+                    };
+                }
+            } else {
+                window.location.href = 'shop.html';
+            }
+        }
+
+        // Load cart count
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            document.querySelector('.cart-count').textContent = cart.length;
+        }
+
+        // Add to cart functionality
+        document.querySelector('.add-to-cart').addEventListener('click', function() {
+            const productId = getUrlParameter('id');
+            const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+            cart.push(parseInt(productId));
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+            alert('Product added to cart!');
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProductDetails();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html> 
