@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Product Dashboard - Sanrico Mercantile</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/staff-dashboard.css">
+    <style>
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .delete-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .select-all-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .select-all-controls.hidden {
+            display: none;
+        }
+
+        .action-btn {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .action-btn.delete {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .action-btn.delete:hover {
+            background-color: #c82333;
+        }
+
+        .action-btn.cancel {
+            background-color: #6c757d;
+            color: white;
+            padding: 4px 8px;
+        }
+
+        .action-btn.cancel:hover {
+            background-color: #5a6268;
+        }
+
+        .select-all-label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 0.9em;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        #selectAll {
+            margin: 0;
+            cursor: pointer;
+        }
+
+        /* Ensure the delete column has enough width */
+        .delete-column {
+            min-width: 300px;
+        }
+
+        /* Style for when delete mode is active */
+        #deleteButton.active {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        #dropZone {
+            color: black;
+            cursor: pointer;
+            padding: 20px;
+            border: 2px dashed #ccc;
+            border-radius: 4px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        #dropZone.dragover {
+            background-color: #f8f9fa;
+            border-color: #0d6efd;
+        }
+    </style>
+    <script src="js/auth.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/toast.js"></script>
+</head>
+<body class="bg-gray-100">
+    <div class="container">
+        <div class="header">
+            <h1>Products</h1>
+            <div class="header-actions">
+                <button class="btn btn-secondary" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                        <th class="delete-column">
+                            <div class="delete-controls">
+                                <button id="deleteButton" class="action-btn delete">Delete</button>
+                                <div class="select-all-controls hidden">
+                                    <label class="select-all-label">
+                                        <input type="checkbox" id="selectAll">
+                                        SELECT ALL
+                                    </label>
+                                    <button id="cancelDelete" class="action-btn cancel">Cancel</button>
+                                </div>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="productTable"></tbody>
+            </table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+    </div>
+
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            <h2 class="modal-title">Log In</h2>
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="user-login">User Login</button>
+                <button class="tab-btn" data-tab="staff-login">Staff Login</button>
+            </div>
+            <div class="tab-content active" id="user-login">
+                <div class="google-signin-container">
+                    <div id="g_id_onload"
+                         data-client_id="856316440062-00drlhn0s99moqu4a0ktbvgrk0l4mda2.apps.googleusercontent.com"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin" 
+                         data-type="standard" 
+                         data-size="large" 
+                         data-theme="outline" 
+                         data-text="sign_in_with" 
+                         data-shape="rectangular" 
+                         data-logo_alignment="left">
+                    </div>
+                    <p>Use Google to log in or register</p>
+                </div>
+            </div>
+            <div class="tab-content" id="staff-login">
+                <form id="staffLoginForm" onsubmit="event.preventDefault(); document.getElementById('staffLoginSubmitBtn').click();">
+                    <div class="form-group">
+                        <label for="staff-id">Staff ID</label>
+                        <input type="text" id="staff-id" class="form-control" placeholder="Enter your staff ID">
+                    </div>
+                    <div class="form-group">
+                        <label for="staff-password">Password</label>
+                        <input type="password" id="staff-password" class="form-control" placeholder="Enter your password">
+                    </div>
+                    <button type="submit" class="btn" id="staffLoginSubmitBtn">Log In</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="productModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle">Update Product Image</h2>
+            <div class="space-y-4">
+                <div class="product-info">
+                    <label>Product:</label>
+                    <input type="text" id="productName" readonly class="readonly-field">
+                </div>
+                <div id="dropZone">
+                    Drag and drop an image here or click to select
+                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                </div>
+                <div id="imagePreview" class="mt-2 hidden">
+                    <img id="previewImg" src="" alt="Image Preview" class="w-32 h-32 object-cover rounded">
+                </div>
+            </div>
+            <div class="modal-actions">
+                <button onclick="closeModal()">Cancel</button>
+                <button id="saveProduct">Save Image</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        const itemsPerPage = 10;
+        let currentPage = 1;
+        let deleteMode = false;
+        let selectedProducts = new Set();
+        
+        // Initialize with the same products as shop.html
+        let products = [
+            { id: 1, name: '18V Cordless Drill Kit', price: 129.99, category: 'power-tools', image: 'Cordless Drill' },
+            { id: 2, name: '7¼" Circular Saw', price: 89.99, category: 'power-tools', image: 'Circular Saw' },
+            { id: 3, name: '108pc Mechanic Tool Set', price: 149.99, category: 'hand-tools', image: 'Tool Set' },
+            { id: 4, name: 'Heavy-Duty Tool Box', price: 34.99, category: 'hand-tools', image: 'Tool Box' },
+            { id: 5, name: 'PVC Pipe 1/2"', price: 5.99, category: 'plumbing', image: 'PVC Pipe' },
+            { id: 6, name: 'Brass Faucet', price: 29.99, category: 'plumbing', image: 'Faucet' },
+            { id: 7, name: 'Electrical Wire 14/2', price: 45.99, category: 'electrical', image: 'Electrical Wire' },
+            { id: 8, name: 'Wall Outlet', price: 3.99, category: 'electrical', image: 'Outlet' },
+            { id: 9, name: 'Cement Bag 40kg', price: 12.99, category: 'building-materials', image: 'Cement Bag' },
+            { id: 10, name: 'Steel Rebar 10mm', price: 8.99, category: 'building-materials', image: 'Rebar' },
+            { id: 11, name: 'Angle Grinder', price: 69.99, category: 'power-tools', image: 'Angle Grinder' },
+            { id: 12, name: 'Screwdriver Set', price: 19.99, category: 'hand-tools', image: 'Screwdriver Set' }
+        ];
+
+        // Load saved products from localStorage if they exist
+        const savedProducts = localStorage.getItem('products');
+        if (savedProducts) {
+            products = JSON.parse(savedProducts);
+            console.log('Loaded products from localStorage:', products);
+        } else {
+            // If no saved products, save the initial products
+            localStorage.setItem('products', JSON.stringify(products));
+            console.log('Saved initial products to localStorage:', products);
+        }
+
+        function displayProducts(page) {
+            console.log('Displaying products for page', page, 'Total products:', products.length);
+            const start = (page - 1) * itemsPerPage;
+            const end = start + itemsPerPage;
+            const displayed = products.slice(start, end);
+            document.getElementById('productTable').innerHTML = displayed.map(p => `
+                <tr>
+                    <td>
+                        <div class="product-name">
+                            <img src="${p.image.startsWith('data:image') ? p.image : 'images/' + p.image}" 
+                                 alt="${p.name}" 
+                                 class="product-image"
+                                 onerror="this.src='images/placeholder.jpg'">
+                            <div>
+                                <span>${p.name}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>${p.category || 'N/A'}</td>
+                    <td>₱${p.price.toFixed(2)}</td>
+                    <td>
+                        <button onclick="editProduct(${p.id})" class="action-btn">Edit</button>
+                    </td>
+                    <td class="delete-column">
+                        <input type="checkbox" class="delete-checkbox" data-id="${p.id}" 
+                               ${selectedProducts.has(p.id) ? 'checked' : ''}
+                               style="display: ${deleteMode ? 'block' : 'none'}">
+                    </td>
+                </tr>
+            `).join('');
+            updatePagination();
+            updateDeleteCheckboxes();
+        }
+
+        function updatePagination() {
+            const totalPages = Math.ceil(products.length / itemsPerPage);
+            const pagination = document.getElementById('pagination');
+            pagination.innerHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                button.className = i === currentPage ? 'active' : '';
+                button.onclick = () => { currentPage = i; displayProducts(currentPage); };
+                pagination.appendChild(button);
+            }
+        }
+
+        function editProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+            
+            // Show the modal for image update
+            const modal = document.getElementById('productModal');
+            modal.classList.add('show');
+            
+            // Set the product name in the readonly field
+            document.getElementById('productName').value = product.name;
+            
+            // Set up the save handler
+            document.getElementById('saveProduct').onclick = () => {
+                const fileInput = document.getElementById('fileInput');
+                const previewImg = document.getElementById('previewImg');
+                
+                if (fileInput.files.length > 0 && previewImg.src) {
+                    // Save the base64 image data
+                    product.image = previewImg.src;
+                    localStorage.setItem('products', JSON.stringify(products));
+                    displayProducts(currentPage);
+                    closeModal();
+                } else {
+                    alert('Please provide an image file');
+                }
+            };
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('show');
+            document.getElementById('productName').value = '';
+            document.getElementById('imagePreview').classList.add('hidden');
+            document.getElementById('previewImg').src = '';
+        }
+
+        // File input preview handler
+        document.getElementById('fileInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                if (!file.type.startsWith('image/')) {
+                    alert('Please upload an image file');
+                    this.value = '';
+                    return;
+                }
+                
+                if (file.size > 2 * 1024 * 1024) { // 2MB limit for base64
+                    alert('Image size should be less than 2MB');
+                    this.value = '';
+                    return;
+                }
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Drag and drop functionality
+        const dropZone = document.getElementById('dropZone');
+        
+        dropZone.addEventListener('click', () => {
+            document.getElementById('fileInput').click();
+        });
+
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('dragover');
+        });
+
+        dropZone.addEventListener('dragleave', () => {
+            dropZone.classList.remove('dragover');
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const fileInput = document.getElementById('fileInput');
+                fileInput.files = e.dataTransfer.files;
+                fileInput.dispatchEvent(new Event('change'));
+            }
+        });
+
+        function toggleDeleteMode() {
+            deleteMode = !deleteMode;
+            const deleteButton = document.getElementById('deleteButton');
+            const selectAllControls = document.querySelector('.select-all-controls');
+            const checkboxes = document.querySelectorAll('.delete-checkbox');
+            
+            if (deleteMode) {
+                deleteButton.textContent = 'REMOVE IMAGES';
+                deleteButton.classList.add('active');
+                selectAllControls.classList.remove('hidden');
+                checkboxes.forEach(checkbox => checkbox.style.display = 'block');
+            } else {
+                deleteButton.textContent = 'Delete';
+                deleteButton.classList.remove('active');
+                selectAllControls.classList.add('hidden');
+                checkboxes.forEach(checkbox => checkbox.style.display = 'none');
+                selectedProducts.clear();
+            }
+            
+            displayProducts(currentPage);
+        }
+
+        function updateDeleteCheckboxes() {
+            const checkboxes = document.querySelectorAll('.delete-checkbox');
+            checkboxes.forEach(checkbox => {
+                const productId = parseInt(checkbox.dataset.id);
+                checkbox.checked = selectedProducts.has(productId);
+                
+                // Remove existing event listener to prevent duplicates
+                checkbox.removeEventListener('change', handleCheckboxChange);
+                // Add new event listener
+                checkbox.addEventListener('change', handleCheckboxChange);
+            });
+            updateSelectAllCheckbox();
+        }
+
+        function handleCheckboxChange(event) {
+            const productId = parseInt(event.target.dataset.id);
+            if (event.target.checked) {
+                selectedProducts.add(productId);
+            } else {
+                selectedProducts.delete(productId);
+            }
+            updateSelectAllCheckbox();
+        }
+
+        function updateSelectAllCheckbox() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const allProducts = products.map(p => p.id);
+            const allSelected = allProducts.every(id => selectedProducts.has(id));
+            selectAllCheckbox.checked = allSelected;
+        }
+
+        function handleSelectAll() {
+            const selectAllCheckbox = document.getElementById('selectAll');
+            const isChecked = selectAllCheckbox.checked;
+            
+            // Update all products, not just the current page
+            products.forEach(product => {
+                if (isChecked) {
+                    selectedProducts.add(product.id);
+                } else {
+                    selectedProducts.delete(product.id);
+                }
+            });
+            
+            displayProducts(currentPage);
+        }
+
+        function removeSelectedImages() {
+            if (selectedProducts.size === 0) {
+                alert('Please select at least one product to remove images from.');
+                return;
+            }
+            
+            if (confirm(`Are you sure you want to remove images from ${selectedProducts.size} selected products?`)) {
+                products = products.map(product => {
+                    if (selectedProducts.has(product.id)) {
+                        return { ...product, image: 'placeholder.jpg' };
+                    }
+                    return product;
+                });
+                
+                localStorage.setItem('products', JSON.stringify(products));
+                selectedProducts.clear();
+                toggleDeleteMode();
+                displayProducts(currentPage);
+                alert('Selected images have been removed successfully.');
+            }
+        }
+
+        function handleLogout() {
+            const currentUser = Auth.getCurrentUser();
+            const staffId = currentUser ? currentUser.staffId : '';
+            const result = Auth.logout();
+            if (result.success) {
+                showToast(`${staffId} is successfully logged off`);
+                setTimeout(() => {
+                window.location.href = 'index.html';
+                }, 1000);
+            } else {
+                showToast(result.message);
+            }
+        }
+
+        // Event Listeners
+        document.getElementById('logoutBtn').removeEventListener('click', handleLogout);
+        document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+        document.getElementById('deleteButton').addEventListener('click', function() {
+            if (deleteMode) {
+                removeSelectedImages();
+            } else {
+                toggleDeleteMode();
+            }
+        });
+        document.getElementById('cancelDelete').addEventListener('click', toggleDeleteMode);
+        document.getElementById('selectAll').addEventListener('change', handleSelectAll);
+
+        // Listen for storage changes
+        window.addEventListener('storage', (e) => {
+            if (e.key === 'products') {
+                products = JSON.parse(e.newValue || '[]');
+                displayProducts(currentPage);
+            }
+        });
+
+        // Ensure DOM is loaded before displaying products
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => displayProducts(currentPage));
+        } else {
+            displayProducts(currentPage);
+        }
+    </script>
+</body>
+</html>

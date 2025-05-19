@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Sanrico Mercantile Inc.</title>
+    <script>
+        // Set theme immediately before anything loads
+        const savedMode = localStorage.getItem('nightMode');
+        document.documentElement.setAttribute('data-theme', !savedMode || savedMode === 'dark' ? 'dark' : 'light');
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="js/auth.js"></script>
+    <script src="js/loginButton.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/nightMode.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo-container" data-tooltip="Click to toggle dark/light mode">
+                <img src="images/sanrico_logo_1.png" alt="Sanrico Mercantile Logo" class="logo-img" id="nightModeToggle">
+                <a href="index.html" class="logo">
+                    Sanrico <span>Mercantile</span>
+                </a>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <button class="mobile-toggle" id="menuToggle">☰</button>
+                <nav>
+                    <ul id="mainMenu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="aboutus.html">About Us</a></li>
+                    </ul>
+                </nav>
+                <button class="account-btn" id="loginBtn">
+                    <span class="profile-icon">👤</span>
+                    Log In
+                </button>
+                <a href="cart.html" class="cart-btn hidden" id="cartBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Checkout Section -->
+    <section class="checkout-section">
+        <div class="container">
+            <h2 class="section-title">Checkout</h2>
+            <div class="checkout-container">
+                <!-- Billing and Payment Information -->
+                <div class="checkout-card">
+                    <h3>Billing Information</h3>
+                    <div class="form-group">
+                        <label for="full-name">Full Name</label>
+                        <input type="text" id="full-name" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Shipping Address</label>
+                        <textarea id="address" class="form-control" rows="3" placeholder="Enter shipping address"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone-number">Phone Number</label>
+                        <input type="tel" id="phone-number" class="form-control" placeholder="e.g., 09123456789">
+                    </div>
+                    <h3>Payment Information</h3>
+                    <div class="form-group">
+                        <label for="payment-method">Payment Method</label>
+                        <select id="payment-method" class="form-control">
+                            <option value="bank">Bank Transfer</option>
+                            <option value="gcash">GCash</option>
+                            <option value="cheque">Cheque</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="checkout-card">
+                    <h3>Order Summary</h3>
+                    <div class="order-items" id="orderItems">
+                        <!-- Order items will be populated by JavaScript -->
+                    </div>
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span id="subtotal">₱0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span id="shipping">₱0.00</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span id="total">₱0.00</span>
+                    </div>
+                    <div class="notes">
+                        <label for="notes-display">Additional Notes</label>
+                        <textarea id="notes-display" class="form-control" readonly></textarea>
+                    </div>
+                    <button class="btn" id="placeOrderBtn">Place Order</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="shop.html?category=power-tools">Power Tools</a></li>
+                        <li><a href="shop.html?category=hand-tools">Hand Tools</a></li>
+                        <li><a href="shop.html?category=plumbing">Plumbing</a></li>
+                        <li><a href="shop.html?category=electrical">Electrical</a></li>
+                        <li><a href="shop.html?category=building-materials">Building Materials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Information</h4>
+                    <ul>
+                        <li><a href="aboutus.html">About Us</a></li>
+                        <li><a href="#">Delivery Information</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="#">Order Status</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li>Regalado Avenue</li>
+                        <li>Fairview, Quezon City</li>
+                        <li>Phone: (555) 123-4567</li>
+                        <li>Email: <a href="mailto:support@sanricomercantile@gmail.com">support@sanricomercantile@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Sanrico Mercantile Inc. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Redirect to home if not logged in
+        if (typeof Auth !== 'undefined' && !Auth.isLoggedIn()) {
+            window.location.href = 'index.html';
+        }
+
+        // Show/hide mobile menu
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('mainMenu').classList.toggle('show');
+        });
+
+        // Account button functionality is now handled by loginButton.js
+        // No need to add a duplicate event listener here
+
+        // Checkout functionality
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof Auth === 'undefined' || typeof Cart === 'undefined') {
+                console.error('Auth or Cart class not loaded. Ensure auth.js is included correctly.');
+                document.getElementById('orderItems').innerHTML = '<p>Error loading cart. Please try again.</p>';
+                return;
+            }
+
+            const currentUser = Auth.getCurrentUser();
+            const myCart = new Cart();
+
+            // Debug: Log cart data and localStorage
+            console.log('Raw cart data from localStorage:', localStorage.getItem('cart'));
+            console.log('Parsed cart items:', myCart.items);
+            console.log('Cart notes:', myCart.notes);
+
+            // Load billing information
+            const fullNameInput = document.getElementById('full-name');
+            const emailInput = document.getElementById('email');
+            const addressInput = document.getElementById('address');
+            const phoneInput = document.getElementById('phone-number');
+            const notesInput = document.getElementById('notes-display');
+
+            if (currentUser) {
+                fullNameInput.value = currentUser.fullName || 'N/A';
+                emailInput.value = currentUser.email || 'N/A';
+                const savedAddress = Auth.getUserAddress(currentUser.id);
+                addressInput.value = savedAddress || '';
+                const savedPhone = Auth.getUserPhone(currentUser.id);
+                phoneInput.value = savedPhone || '';
+            } else {
+                console.error('No current user found.');
+                document.getElementById('orderItems').innerHTML = '<p>Please log in to view checkout.</p>';
+                return;
+            }
+
+            // Display order summary
+            const orderItemsContainer = document.getElementById('orderItems');
+            const subtotalElement = document.getElementById('subtotal');
+            const shippingElement = document.getElementById('shipping');
+            const totalElement = document.getElementById('total');
+
+            if (!myCart.items || myCart.items.length === 0) {
+                console.warn('Cart is empty or items not loaded.');
+                orderItemsContainer.innerHTML = '<p>Your cart is empty. <a href="shop.html">Continue Shopping</a></p>';
+                document.getElementById('placeOrderBtn').disabled = true;
+            } else {
+                orderItemsContainer.innerHTML = myCart.items.map(item => {
+                    const categoryDisplay = item.category && item.category !== 'unknown'
+                        ? item.category.replace('-', ' ')
+                        : 'General';
+                    return `
+                        <div class="order-item">
+                            <div class="product-info">
+                                <div class="product-img-small">
+                                    <img src="${item.image.startsWith('data:image') ? item.image : 'images/' + item.image}" 
+                                         alt="${item.name}"
+                                         onerror="this.src='images/placeholder.jpg'"
+                                         style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                <div>
+                                    <h4>${item.name || 'Unknown Product'}</h4>
+                                </div>
+                            </div>
+                            <p>Quantity: ${item.quantity || 1}</p>
+                            <p>Subtotal: ₱${((item.price || 0) * (item.quantity || 1)).toFixed(2)}</p>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            // Display notes
+            notesInput.value = myCart.notes || 'No additional notes';
+
+            // Update summary
+            const subtotal = myCart.calculateSubtotal();
+            const total = myCart.calculateTotal();
+            subtotalElement.textContent = `₱${subtotal.toFixed(2)}`;
+            shippingElement.textContent = `₱${(myCart.shipping || 150).toFixed(2)}`;
+            totalElement.textContent = `₱${total.toFixed(2)}`;
+
+            // Initialize cart count
+            Auth.updateCartCount();
+
+            // Functions for form validation and order processing
+            function validateForm() {
+                const address = document.getElementById('address').value.trim();
+                const phoneNumber = document.getElementById('phone-number').value.trim();
+                
+                // Validate inputs
+                if (!address) {
+                    showToast('Please provide a shipping address.');
+                    return false;
+                }
+                if (!phoneNumber) {
+                    showToast('Please provide a phone number.');
+                    return false;
+                }
+                if (!/^\d{11}$/.test(phoneNumber)) {
+                    showToast('Please enter a valid 11-digit phone number (e.g., 09123456789).');
+                    return false;
+                }
+                
+                return true;
+            }
+            
+            function processOrder() {
+                const address = document.getElementById('address').value.trim();
+                const phoneNumber = document.getElementById('phone-number').value.trim();
+                const paymentMethod = document.getElementById('payment-method').value;
+                
+                const paymentDetails = { method: paymentMethod };
+                const shippingDetails = { address, phoneNumber };
+
+                console.log('Placing order with items:', myCart.items);
+                console.log('Shipping details:', shippingDetails);
+                console.log('Payment details:', paymentDetails);
+
+                const result = Auth.checkout(paymentDetails, shippingDetails);
+                console.log('Checkout result:', result);
+                showToast(result.message);
+                if (result.success) {
+                    console.log('userCarts after checkout:', localStorage.getItem('userCarts'));
+                    window.location.href = 'profile.html';
+                }
+            }
+
+            // Trigger place order when submit button is clicked
+            document.getElementById('placeOrderBtn').addEventListener('click', () => {
+                if (validateForm()) {
+                    processOrder();
+                }
+            });
+        });
+    </script>
+    
+    <!-- Toast Container -->
+    <div class="toast" id="toast"></div>
+</body>
+</html>

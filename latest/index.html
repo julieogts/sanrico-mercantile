@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanrico Mercantile Inc. | Hardware Store</title>
+    <script>
+        // Set theme immediately before anything loads
+        const savedMode = localStorage.getItem('nightMode');
+        document.documentElement.setAttribute('data-theme', !savedMode || savedMode === 'dark' ? 'dark' : 'light');
+    </script>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/modal.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="js/auth.js"></script>
+    <script src="js/loginButton.js"></script>
+    <script src="js/login.js"></script>
+    <script src="js/toast.js"></script>
+    <script src="js/nightMode.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo-container" data-tooltip="Click to toggle dark/light mode">
+                <img src="images/sanrico_logo_1.png" alt="Sanrico Mercantile Logo" class="logo-img" id="nightModeToggle">
+                <a href="index.html" class="logo">
+                    Sanrico <span>Mercantile</span>
+                </a>
+            </div>
+            <div style="display: flex; align-items: center;">
+                <button class="mobile-toggle" id="menuToggle">☰</button>
+                <nav>
+                    <ul id="mainMenu">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="aboutus.html">About Us</a></li>
+                    </ul>
+                </nav>
+                <button class="account-btn" id="loginBtn">
+                    <span class="profile-icon">👤</span>
+                    Log In
+                </button>
+                <a href="cart.html" class="cart-btn" id="cartBtn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="9" cy="21" r="1"></circle>
+                        <circle cx="20" cy="21" r="1"></circle>
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                    </svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Quality Hardware for Every Project</h1>
+                <p>Find the perfect tools and materials for your next home improvement, construction, or DIY project.</p>
+                <a href="shop.html" class="btn">Shop Now <span class="hammer">🔨</span></a>
+            </div>
+            <div class="carousel-wrapper">
+                <div id="carouselContainer" class="carousel">
+                    <!-- Carousel items will be populated by JavaScript -->
+                </div>
+                <div class="carousel-dots" id="carouselDots">
+                    <!-- Dots will be populated by JavaScript -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Popular Categories</h2>
+            <div class="category-grid">
+                                                                            <a href="shop.html?category=power-tools" class="category-card" data-category="power-tools">
+                    <div class="category-img">
+                        <img src="images/catego ries/power-tools.jpg" alt="Power Tools" onerror="this.src='images/placeholder.jpg'" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="category-content">
+                        <h3>Power Tools</h3>
+                        <p>High-performance drills, saws, and more</p>
+                    </div>
+                </a>
+                <a href="shop.html?category=hand-tools" class="category-card" data-category="hand-tools">
+                    <div class="category-img">
+                        <img src="images/categories/hand-tools.jpg" alt="Hand Tools" onerror="this.src='images/placeholder.jpg'" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="category-content">
+                        <h3>Hand Tools</h3>
+                        <p>Wrenches, hammers, and essential hand tools</p>
+                    </div>
+                </a>
+                <a href="shop.html?category=plumbing" class="category-card" data-category="plumbing">
+                    <div class="category-img">
+                        <img src="images/categories/plumbing.jpg" alt="Plumbing" onerror="this.src='images/placeholder.jpg'" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="category-content">
+                        <h3>Plumbing</h3>
+                        <p>Pipes, fittings, and fixtures</p>
+                    </div>
+                </a>
+                <a href="shop.html?category=electrical" class="category-card" data-category="electrical">
+                    <div class="category-img">
+                        <img src="images/categories/electrical.jpg" alt="Electrical" onerror="this.src='images/placeholder.jpg'" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <div class="category-content">
+                        <h3>Electrical</h3>
+                        <p>Wiring, outlets, and electrical components</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Products -->
+    <section class="featured">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="product-grid">
+                <div class="product-card">
+                    <a href="product.html?id=1" class="product-link">
+                        <div class="product-img">
+                            <img src="images/products/cordless-drill.jpg" alt="18V Cordless Drill Kit" onerror="this.src='images/placeholder.jpg'" style="width: 100%; height: 100%; object-fit: cover;" data-product-id="1">
+                        </div>
+                    <div class="product-content">
+                        <h3 class="product-title">18V Cordless Drill Kit</h3>
+                        <p class="price">₱129.99</p>
+                    </div>
+                    </a>
+                    <button class="add-to-cart" data-product='{"id":1,"name":"18V Cordless Drill Kit","price":129.99,"category":"power-tools","image":"products/cordless-drill.jpg"}'>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <a href="product.html?id=2" class="product-link">
+                        <div class="product-img">
+                            <img src="images/products/circular-saw.jpg" alt="7¼" Circular Saw" onerror="this.src='images/placeholder.jpg'" style="width: 100%; height: 100%; object-fit: cover;" data-product-id="2">
+                        </div>
+                    <div class="product-content">
+                        <h3 class="product-title">7¼" Circular Saw</h3>
+                        <p class="price">₱89.99</p>
+                    </div>
+                    </a>
+                    <button class="add-to-cart" data-product='{"id":2,"name":"7¼\" Circular Saw","price":89.99,"category":"power-tools","image":"products/circular-saw.jpg"}'>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <a href="product.html?id=3" class="product-link">
+                        <div class="product-img">
+                            <img src="images/products/tool-set.jpg" alt="108pc Mechanic's Tool Set" onerror="this.src='images/placeholder.jpg'" style="width: 100%; height: 100%; object-fit: cover;" data-product-id="3">
+                        </div>
+                    <div class="product-content">
+                        <h3 class="product-title">108pc Mechanic's Tool Set</h3>
+                        <p class="price">₱149.99</p>
+                    </div>
+                    </a>
+                    <button class="add-to-cart" data-product='{"id":3,"name":"108pc Mechanic Tool Set","price":149.99,"category":"hand-tools","image":"products/tool-set.jpg"}'>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <a href="product.html?id=4" class="product-link">
+                        <div class="product-img">
+                            <img src="images/products/tool-box.jpg" alt="22" Heavy-Duty Tool Box" onerror="this.src='images/placeholder.jpg'" style="width: 100%; height: 100%; object-fit: cover;" data-product-id="4">
+                        </div>
+                    <div class="product-content">
+                        <h3 class="product-title">22" Heavy-Duty Tool Box</h3>
+                        <p class="price">₱34.99</p>
+                    </div>
+                    </a>
+                    <button class="add-to-cart" data-product='{"id":4,"name":"22\" Heavy-Duty Tool Box","price":34.99,"category":"hand-tools","image":"products/tool-box.jpg"}'>Add to Cart</button>
+                </div>
+                <div class="product-card">
+                    <a href="product.html?id=5" class="product-link">
+                        <div class="product-img">
+                            <img src="images/products/cement.jpg" alt="40kg Portland Cement" onerror="this.src='images/placeholder.jpg'" style="width: 100%; height: 100%; object-fit: cover;" data-product-id="5">
+                        </div>
+                        <div class="product-content">
+                            <h3 class="product-title">40kg Portland Cement</h3>
+                            <p class="price">₱299.99</p>
+                        </div>
+                    </a>
+                    <button class="add-to-cart" data-product='{"id":5,"name":"40kg Portland Cement","price":299.99,"category":"building-materials","image":"products/cement.jpg"}'>Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            <h2 class="modal-title">Log In</h2>
+            <div class="tab-buttons">
+                <button class="tab-btn active" data-tab="user-login">User Login</button>
+                <button class="tab-btn" data-tab="staff-login">Staff Login</button>
+            </div>
+            <div class="tab-content active" id="user-login">
+                <div class="google-signin-container">
+                    <div id="g_id_onload"
+                         data-client_id="856316440062-00drlhn0s99moqu4a0ktbvgrk0l4mda2.apps.googleusercontent.com"
+                         data-callback="handleGoogleSignIn"
+                         data-auto_prompt="false">
+                    </div>
+                    <div class="g_id_signin" 
+                         data-type="standard" 
+                         data-size="large" 
+                         data-theme="outline" 
+                         data-text="sign_in_with" 
+                         data-shape="rectangular" 
+                         data-logo_alignment="left">
+                    </div>
+                    <p>Use Google to log in or register</p>
+                </div>
+            </div>
+            <div class="tab-content" id="staff-login">
+                <div class="form-group">
+                    <label for="staff-id">Staff ID</label>
+                    <input type="text" id="staff-id" class="form-control" placeholder="Enter your staff ID">
+                </div>
+                <div class="form-group">
+                    <label for="staff-password">Password</label>
+                    <input type="password" id="staff-password" class="form-control" placeholder="Enter your password">
+                </div>
+                <button class="btn" id="staffLoginSubmitBtn">Log In</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h4>Shop</h4>
+                    <ul>
+                        <li><a href="shop.html?category=power-tools">Power Tools</a></li>
+                        <li><a href="shop.html?category=hand-tools">Hand Tools</a></li>
+                        <li><a href="shop.html?category=plumbing">Plumbing</a></li>
+                        <li><a href="shop.html?category=electrical">Electrical</a></li>
+                        <li><a href="shop.html?category=building-materials">Building Materials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Information</h4>
+                    <ul>
+                        <li><a href="aboutus.html">About Us</a></li>
+                        <li><a href="#">Delivery Information</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Customer Service</h4>
+                    <ul>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="#">Order Status</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contact Us</h4>
+                    <ul>
+                        <li>Regalado Avenue</li>
+                        <li>Fairview, Quezon City</li>
+                        <li>Phone: (555) 123-4567</li>
+                        <li>Email: <a href="mailto:support@sanricomercantile@gmail.com">support@sanricomercantile@gmail.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                © 2025 Sanrico Mercantile Inc. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Container -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                updateAccountButton();
+                Auth.updateCartCount();
+            } catch (error) {
+                console.error('Error during initial load:', error);
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.getElementById('mainMenu').classList.toggle('show');
+        });
+
+        // Cart button redirect to login if not logged in
+        document.getElementById('cartBtn').addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default link navigation
+            if (!Auth.isLoggedIn()) {
+                showToast('Please log in to view your cart.');
+                document.getElementById('loginModal').classList.add('show');
+            } else {
+                // If logged in, navigate to cart page
+                window.location.href = 'cart.html';
+            }
+        });
+
+        // Add Google Sign-In handler function
+        function handleGoogleSignIn(response) {
+            console.log('Google Sign-In Response:', response);
+            const idToken = response.credential;
+            if (!idToken) {
+                console.error('No idToken received');
+                showToast('Google Sign-In failed: No token received');
+                return;
+            }
+            // Try login first
+            let result = Auth.googleLogin(idToken);
+            console.log('Login Result:', result);
+            if (!result.success && result.message.includes("not registered")) {
+                // If login fails due to user not existing, attempt registration
+                result = Auth.googleRegister(idToken);
+                console.log('Registration Result:', result);
+            }
+            showToast(result.message);
+            if (result.success) {
+                updateAccountButton();
+                document.getElementById('loginModal').classList.remove('show');
+            }
+        }
+
+        // Function to update category card images with random products
+        function updateCategoryImages() {
+            const savedProducts = localStorage.getItem('products');
+            if (savedProducts) {
+                const products = JSON.parse(savedProducts);
+                
+                // Group products by category
+                const productsByCategory = products.reduce((acc, product) => {
+                    if (!acc[product.category]) {
+                        acc[product.category] = [];
+                    }
+                    acc[product.category].push(product);
+                    return acc;
+                }, {});
+
+                // Update category card images with random product images
+                document.querySelectorAll('.category-card').forEach(card => {
+                    const category = card.getAttribute('data-category');
+                    const categoryProducts = productsByCategory[category];
+                    
+                    if (categoryProducts && categoryProducts.length > 0) {
+                        const randomProduct = categoryProducts[Math.floor(Math.random() * categoryProducts.length)];
+                        const img = card.querySelector('img');
+                        if (img && randomProduct.image) {
+                            img.src = randomProduct.image.startsWith('data:image') ? 
+                                randomProduct.image : 
+                                'images/' + randomProduct.image;
+                        }
+                    }
+                });
+            }
+        }
+
+        // Load products from localStorage to stay in sync with staff dashboard
+        let products = [];
+        const savedProducts = localStorage.getItem('products');
+        if (savedProducts) {
+            products = JSON.parse(savedProducts);
+            
+            // Update featured product images if they exist in localStorage
+            products.forEach(product => {
+                const img = document.querySelector(`img[data-product-id="${product.id}"]`);
+                if (img && product.image) {
+                    img.src = product.image.startsWith('data:image') ? product.image : 'images/' + product.image;
+                }
+            });
+
+            // Initial update of category images
+            updateCategoryImages();
+        }
+
+        // Update category images when products change in localStorage
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'products') {
+                updateCategoryImages();
+            }
+        });
+
+        // Update category images on page load/reload
+        window.addEventListener('load', updateCategoryImages);
+
+        // Product Carousel
+        function updateCarousel() {
+            const savedProducts = localStorage.getItem('products');
+            if (savedProducts) {
+                const products = JSON.parse(savedProducts);
+                if (products.length > 0) {
+                    // Group products by category
+                    const productsByCategory = products.reduce((acc, product) => {
+                        if (!acc[product.category]) {
+                            acc[product.category] = [];
+                        }
+                        acc[product.category].push(product);
+                        return acc;
+                    }, {});
+
+                    // Get categories and select three different ones randomly
+                    const categories = Object.keys(productsByCategory);
+                    const selectedCategories = [];
+                    const selectedProducts = [];
+
+                    // Select up to 3 different categories
+                    while (selectedCategories.length < 3 && categories.length > 0) {
+                        const randomIndex = Math.floor(Math.random() * categories.length);
+                        const category = categories.splice(randomIndex, 1)[0];
+                        if (productsByCategory[category].length > 0) {
+                            selectedCategories.push(category);
+                        }
+                    }
+
+                    // Select one random product from each selected category
+                    selectedCategories.forEach(category => {
+                        const categoryProducts = productsByCategory[category];
+                        const randomIndex = Math.floor(Math.random() * categoryProducts.length);
+                        selectedProducts.push(categoryProducts[randomIndex]);
+                    });
+
+                    // Update carousel HTML
+                    const carouselContainer = document.getElementById('carouselContainer');
+                    const dotsContainer = document.getElementById('carouselDots');
+                    
+                    // Clear existing content
+                    carouselContainer.innerHTML = '';
+                    dotsContainer.innerHTML = '';
+                    
+                    // Add carousel items
+                    selectedProducts.forEach((product, index) => {
+                        // Create slide container
+                        const slide = document.createElement('div');
+                        slide.className = `carousel-slide ${index === 0 ? 'active' : ''}`;
+                        slide.setAttribute('data-product-id', product.id);
+                        
+                        // Create link wrapper that stays fixed
+                        const linkWrapper = document.createElement('div');
+                        linkWrapper.className = 'carousel-link-wrapper';
+                        
+                        // Create link and image
+                        const link = document.createElement('a');
+                        link.href = `product.html?id=${product.id}`;
+                        link.className = 'carousel-link';
+                        link.onclick = (e) => {
+                            e.preventDefault();
+                            window.location.href = `product.html?id=${product.id}`;
+                        };
+                        
+                        const img = document.createElement('img');
+                        img.src = product.image.startsWith('data:image') ? product.image : `images/${product.image}`;
+                        img.alt = product.name;
+                        img.onerror = function() { this.src = 'images/placeholder.jpg'; };
+                        
+                        // Assemble the elements
+                        link.appendChild(img);
+                        linkWrapper.appendChild(link);
+                        slide.appendChild(linkWrapper);
+                        carouselContainer.appendChild(slide);
+
+                        // Add dot indicator
+                        const dot = document.createElement('button');
+                        dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
+                        dot.setAttribute('data-index', index);
+                        dot.onclick = () => showSlide(index);
+                        dotsContainer.appendChild(dot);
+                    });
+
+                    // Start automatic "rotation"
+                    let currentSlide = 0;
+                    const slides = carouselContainer.children;
+                    const dots = dotsContainer.children;
+                    const totalSlides = slides.length;
+
+                    function showSlide(index) {
+                        // Remove active class from all slides and dots
+                        Array.from(slides).forEach(slide => slide.classList.remove('active'));
+                        Array.from(dots).forEach(dot => dot.classList.remove('active'));
+                        
+                        // Add active class to current slide and dot
+                        slides[index].classList.add('active');
+                        dots[index].classList.add('active');
+                        
+                        currentSlide = index;
+                    }
+
+                    // Handle click events on the carousel container
+                    carouselContainer.addEventListener('click', (e) => {
+                        const slide = e.target.closest('.carousel-slide');
+                        if (slide) {
+                            const productId = slide.getAttribute('data-product-id');
+                            window.location.href = `product.html?id=${productId}`;
+                        }
+                    });
+
+                    // Auto "rotate" slides every * seconds
+                    setInterval(() => {
+                        const nextSlide = (currentSlide + 1) % totalSlides;
+                        showSlide(nextSlide);
+                    }, 6200);
+                }
+            }
+        }
+
+        // Update carousel when products change
+        window.addEventListener('storage', function(e) {
+            if (e.key === 'products') {
+                updateCarousel();
+            }
+        });
+
+        // Initial carousel update
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                updateAccountButton();
+                updateCarousel();
+                Auth.updateCartCount();
+            } catch (error) {
+                console.error('Error during initialization:', error);
+            }
+        });
+
+        // Add to cart functionality
+        const myCart = new Cart();
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('add-to-cart')) {
+                e.preventDefault(); // Prevent link navigation
+                if (!Auth.isLoggedIn()) {
+                    showToast('Please log in to add items to the cart.');
+                    document.getElementById('loginModal').classList.add('show');
+                    return;
+                }
+                const product = JSON.parse(e.target.dataset.product);
+                console.log('Adding product to cart:', product);
+                const result = Auth.addToCart(product);
+                showToast(result.message);
+                Auth.updateCartCount();
+            }
+        });
+    </script>
+</body>
+</html>
